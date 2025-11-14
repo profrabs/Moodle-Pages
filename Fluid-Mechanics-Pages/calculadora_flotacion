@@ -1,0 +1,82 @@
+<!--
+  METADATA:
+  Objetivo: Calcular la Fuerza de Flotación (Empuje) basado en la densidad del fluido y el volumen sumergido.
+  Autor: Gemini (Adaptación del código base del usuario)
+  Fecha: 2025-11-14
+  Versión: 1.0
+  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
+-->
+<div
+  style="font-family: Arial, sans-serif; color: #333; max-width: 450px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+  <h2
+    style="margin-top: 0; font-size: 1.3rem; font-weight: bold; color: #064e3b; margin-bottom: 15px; text-align: center;">
+    Calculadora de Flotación</h2>
+  <p
+    style="font-size: 0.9rem; color: #444; margin-bottom: 20px; line-height: 1.5; text-align: center;">
+    Calcula la Fuerza de Flotación ($F_B$) según el Principio de Arquímedes. g = 9.81 m/s².</p>
+  <div>
+    <div>
+      <label
+        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
+        for="density">Densidad del Fluido ($\rho_f$) [kg/m³]</label>
+      <input id="density"
+        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
+        type="number" value="1000">
+    </div>
+    <div style="margin-top: 15px;">
+      <label
+        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
+        for="volume">Volumen Sumergido ($V$) [m³]</label>
+      <input id="volume"
+        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
+        type="number" placeholder="Ej: 0.05">
+    </div>
+    <button id="calculate-btn-2"
+      style="width: 100%; background-color: #065f46; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: background-color 0.3s;"
+      onmouseover="this.style.backgroundColor='#054c38'"
+      onmouseout="this.style.backgroundColor='#065f46'">
+      Calcular $F_B$ </button>
+    <div id="result-container-2"
+      style="display: none; text-align: center; background-color: #f0fdf4; border: 1px solid #a7f3d0; padding: 15px; margin-top: 15px; border-radius: 5px;">
+      <span
+        style="display: block; font-size: 0.9rem; font-weight: 500; color: #064e3b;">Fuerza
+        de Flotación:</span>
+      <span id="result-2"
+        style="display: block; font-size: 1.8rem; font-weight: bold; color: #064e3b; margin-top: 5px;"></span>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Encapsulamos para evitar conflictos en el entorno padre
+  (function() {
+    var calculateBtn2 = document.getElementById('calculate-btn-2');
+
+    if (calculateBtn2) {
+      calculateBtn2.onclick = function() {
+        // Petición: Obtener los valores 🧠
+        var density = parseFloat(document.getElementById('density').value);
+        var volume = parseFloat(document.getElementById('volume').value);
+        var g = 9.81; // Aceleración de gravedad [m/s²]
+
+        var resultContainer = document.getElementById('result-container-2');
+        var resultEl = document.getElementById('result-2');
+
+        resultContainer.style.display = 'block'; // Mostrar el contenedor
+
+        if (isNaN(density) || isNaN(volume) || density <= 0 || volume <= 0) {
+          resultEl.textContent = "Ingrese valores positivos.";
+          resultEl.style.color = "#c00"; // Rojo de error 🛑
+        } else {
+          // Éxito: Aplicamos el Principio de Arquímedes.
+          // Ecuación: F_B = \rho_{\text{fluido}} \cdot g \cdot V_{\text{sumergido}}
+          var buoyancyForce = density * g * volume;
+
+          // Éxito: Mostrar resultado y establecer color principal.
+          resultEl.textContent = buoyancyForce.toFixed(2) + ' N';
+          resultEl.style.color = "#064e3b"; // Verde principal 🌲
+        }
+      };
+    }
+  })();
+</script>
