@@ -1,82 +1,146 @@
 <!--
-  METADATA:
-  Objetivo: Proporcionar una calculadora interactiva para la conversión de Viscosidad SSU a cSt.
-  Autor: Prof. R. Benitez
-  Fecha: 2025-11-14
-  Versión: 1.0
-  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
+  METADATA:
+  Objetivo: Proporcionar una calculadora interactiva para la conversión de Viscosidad SSU a cSt (viscosidad cinemática nu).
+  Autor: Prof. R. Benitez
+  Fecha: 2025-11-14
+  Versión: 3.1 - Corrección de visualización de fórmulas (se eliminó sintaxis LaTeX).
+  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
 -->
-<div
-  style="font-family: Arial, sans-serif; color: #333; max-width: 450px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
-  <h2
-    style="margin-top: 0; font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin-bottom: 15px; text-align: center;">
-    Calculadora de Viscosidad</h2>
-  <p style="font-size: 0.9rem; color: #444; margin-bottom: 20px; line-height: 1.5; text-align: center;">
-    Conversión de Segundos Saybolt Universal (SSU) a Viscosidad Cinemática (\( \nu \)) [cSt].</p>
-  <div>
-    <div>
-      <label
-        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
-        for="ssu">Valor SSU</label>
-      <input id="ssu"
-        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
-        type="number" placeholder="Ej: 150">
+<div id="viscosity-calculator-app"
+  style="font-family: 'Inter', sans-serif; color: #1f2937; max-width: 480px; margin: 20px auto; padding: 30px; background-color: #f9fafb; border-radius: 12px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); border: 2px solid #e5e7eb;">
+  <h2
+    style="margin-top: 0; font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 5px; text-align: center;">
+    Conversor de Viscosidad</h2>
+  <p style="font-size: 0.95rem; color: #4b5563; margin-bottom: 25px; line-height: 1.4; text-align: center;">
+    Segundos Saybolt Universal (SSU) &rarr; Viscosidad Cinemática (&nu;) en cSt.</p>
+  
+  <!-- FÓRMULA DIDÁCTICA (CORREGIDA PARA HTML PLANO) -->
+  <div style="margin-bottom: 20px; padding: 10px 15px; background-color: #e0f2f1; border-left: 4px solid #009688; border-radius: 4px;">
+        <p style="font-size: 0.9rem; font-weight: 600; color: #004d40; margin: 0 0 5px 0;">
+            Fórmulas Utilizadas (Aproximación ASTM):
+        </p>
+        <span style="font-family: monospace; display: block; margin-top: 5px; font-size: 0.85rem; line-height: 1.6;">
+            &nu; &approx; 0.226 &times; SSU - (195 / SSU) &nbsp; <span style="font-weight: normal; color: #4b5563;">(Para 32 &lt; SSU &le; 100)</span>
+            <br>
+            &nu; &approx; 0.220 &times; SSU - (135 / SSU) &nbsp; <span style="font-weight: normal; color: #4b5563;">(Para SSU &gt; 100)</span>
+        </span>
     </div>
-    <button id="calculate-btn"
-      style="width: 100%; background-color: #1e3a8a; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: background-color 0.3s;"
-      onmouseover="this.style.backgroundColor='#1a337a'"
-      onmouseout="this.style.backgroundColor='#1e3a8a'">
-      Calcular \( \nu \) </button>
-    <div id="result-container"
-      style="display: none; text-align: center; background-color: #f0f4f8; border: 1px solid #b6d4f0; padding: 15px; margin-top: 15px; border-radius: 5px;">
-      <span
-        style="display: block; font-size: 0.9rem; font-weight: 500; color: #1e3a8a;">Viscosidad
-        Cinemática:</span>
-      <span id="result"
-        style="display: block; font-size: 1.8rem; font-weight: bold; color: #1e3a8a; margin-top: 5px;"></span>
-    </div>
-  </div>
+
+  <!-- CONTROLES DE ENTRADA -->
+  <div>
+      <label
+        style="display: block; font-size: 1rem; font-weight: 600; color: #111827; margin-bottom: 8px;"
+        for="ssu">Valor de SSU (Segundos Saybolt Universal)</label>
+      <input id="ssu"
+        style="width: 100%; padding: 12px; font-size: 1.1rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; transition: border-color 0.3s, box-shadow 0.3s;"
+        type="number" placeholder="Ej: 150">
+  </div>
+
+  <!-- BOTONES -->
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button id="calculate-btn"
+      style="flex-grow: 3; background-color: #10b981; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px #047857;"
+      onmouseover="this.style.backgroundColor='#059669'"
+      onmouseout="this.style.backgroundColor='#10b981'"
+      onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #047857';"
+      onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px #047857';">
+      Calcular &nu; (cSt)
+    </button>
+    <button id="clear-btn"
+      style="flex-grow: 1; background-color: #6b7280; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px #4b5563;"
+      onmouseover="this.style.backgroundColor='#4b5563'"
+      onmouseout="this.style.backgroundColor='#6b7280'"
+      onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #4b5563';"
+      onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px #4b5563';">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- CONTENEDOR DE RESULTADO -->
+  <div id="result-container"
+    style="display: none; text-align: center; background-color: #ecfdf5; border: 1px solid #a7f3d0; padding: 20px; margin-top: 25px; border-radius: 8px;">
+    <span
+      style="display: block; font-size: 1rem; font-weight: 600; color: #065f46;">Resultado de Viscosidad
+      Cinemática:</span>
+    <span id="result"
+      style="display: block; font-size: 2.2rem; font-weight: 800; color: #065f46; margin-top: 5px;"></span>
+  </div>
 </div>
 
 <script type="text/javascript">
-  // Encapsulamos para evitar conflictos en el entorno padre
-  (function() {
-    var calculateBtn = document.getElementById('calculate-btn');
+  // Petición/Recordatorio: El script se ejecuta cuando el DOM está completamente cargado para asegurar el acceso a los elementos.
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      var ssuInput = document.getElementById('ssu');
+      var calculateBtn = document.getElementById('calculate-btn');
+      var clearBtn = document.getElementById('clear-btn');
+      var resultContainer = document.getElementById('result-container');
+      var resultEl = document.getElementById('result');
 
-    if (calculateBtn) {
-      calculateBtn.onclick = function() {
-        // Petición: Obtener el valor de SSU 🧠
-        var ssuInput = document.getElementById('ssu');
-        var ssu = parseFloat(ssuInput.value);
-        var resultContainer = document.getElementById('result-container');
-        var resultEl = document.getElementById('result');
+      // Petición/Recordatorio: Establecer un valor de ejemplo (SSU=150) y calcularlo al inicio.
+      var defaultSSU = 150;
+      ssuInput.value = defaultSSU;
+      
+      // Ejecutar cálculo inicial para mostrar el ejemplo.
+      calculateViscosity();
+      
+      /**
+       * Objetivo: Maneja el cálculo de la conversión de SSU a cSt.
+       * Entradas: ssu (float) - Valor de la viscosidad en Segundos Saybolt Universal.
+       * Salidas: None. Muestra el resultado directamente en el DOM.
+       */
+      function calculateViscosity() {
+        // Petición/Recordatorio: La Ecuación para SSU > 100 es: \nu = 0.220 \cdot SSU - 135 / SSU
+        // La Ecuación para 32 < SSU \le 100 es: \nu = 0.226 \cdot SSU - 195 / SSU
+        var ssu = parseFloat(ssuInput.value);
+        resultContainer.style.display = 'block'; // Mostrar el contenedor
 
-        resultContainer.style.display = 'block'; // Mostrar el contenedor
-        var cSt = 0;
+        if (isNaN(ssu) || ssu <= 0) {
+          resultEl.textContent = "Ingrese un valor SSU positivo.";
+          resultEl.style.color = "#b91c1c"; // Rojo intenso para error 🛑
+          resultContainer.style.backgroundColor = "#fee2e2"; // Fondo rojo claro
+        } else {
+          var cSt = 0;
+          
+          // Éxito/Finalización: Aplicación de la fórmula de conversión SSU a cSt
+          if (ssu > 100) {
+            cSt = (0.220 * ssu) - (135 / ssu);
+          } else if (ssu > 32 && ssu <= 100) {
+            cSt = (0.226 * ssu) - (195 / ssu);
+          } else {
+            // Advertencia/Cuidado: SSU <= 32 (zona donde la fórmula no aplica o es imprecisa)
+            resultEl.textContent = "Fórmula ASTM no aplica (SSU ≤ 32)";
+            resultEl.style.color = "#92400e"; // Marrón/Naranja para advertencia ⚠️
+            resultContainer.style.backgroundColor = "#fffbeb"; // Fondo amarillo claro
+            return; // Salir de la función si no aplica
+          }
 
-        if (isNaN(ssu) || ssu <= 0) {
-          resultEl.textContent = "Ingrese un valor SSU positivo.";
-          resultEl.style.color = "#c00"; // Rojo de error 🛑
-        } else {
-          // Éxito: Se aplica la fórmula de conversión SSU a cSt (centistokes) ✅
-          if (ssu > 100) {
-            // Ecuación: \nu = 0.220 \cdot SSU - 135 / SSU
-            cSt = (0.220 * ssu) - (135 / ssu);
-          } else if (ssu > 32 && ssu <= 100) {
-            // Ecuación: \nu = 0.226 \cdot SSU - 195 / SSU
-            cSt = (0.226 * ssu) - (195 / ssu);
-          } else {
-            // SSU <= 32
-            resultEl.textContent = "Fórmula no aplica para SSU <= 32";
-            resultEl.style.color = "#b45309"; // Naranja de advertencia ⚠️
-            return; // Salir de la función si no aplica
-          }
+          // Éxito/Finalización: Mostrar resultado.
+          resultEl.textContent = cSt.toFixed(2) + ' cSt';
+          resultEl.style.color = "#065f46"; // Verde oscuro principal 🔷
+          resultContainer.style.backgroundColor = "#ecfdf5"; // Fondo verde claro
+        }
+      }
 
-          // Éxito: Mostrar resultado y establecer color principal.
-          resultEl.textContent = cSt.toFixed(2) + ' cSt';
-          resultEl.style.color = "#1e3a8a"; // Azul principal 🔷
-        }
-      };
-    }
-  })();
+      /**
+       * Objetivo: Limpia el campo de entrada y oculta el resultado.
+       * Entradas: None.
+       * Salidas: None. Limpia el DOM y restablece el foco.
+       */
+      function clearFields() {
+        ssuInput.value = '';
+        resultEl.textContent = '';
+        resultContainer.style.display = 'none';
+        ssuInput.focus();
+      }
+
+      // Éxito/Finalización: Asignación de los eventos a los botones.
+      if (calculateBtn) {
+        calculateBtn.addEventListener('click', calculateViscosity);
+      }
+      if (clearBtn) {
+        clearBtn.addEventListener('click', clearFields);
+      }
+    });
+  })();
 </script>
