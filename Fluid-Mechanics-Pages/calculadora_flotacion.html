@@ -1,82 +1,168 @@
 <!--
-  METADATA:
-  Objetivo: Calcular la Fuerza de Flotación (Empuje) basado en la densidad del fluido y el volumen sumergido.
-  Autor: Gemini (Adaptación del código base del usuario)
-  Fecha: 2025-11-14
-  Versión: 1.0
-  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
+  METADATA:
+  Objetivo: Calcular la Fuerza de Flotación (Empuje) basado en la densidad del fluido y el volumen sumergido.
+  Autor: Prof. R. Benitez
+  Fecha: 2025-11-14
+  Versión: 6.0 - Presentación del resultado en Newtons (N) con indicación de KiloNewtons (kN).
+  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
 -->
-<div
-  style="font-family: Arial, sans-serif; color: #333; max-width: 450px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
-  <h2
-    style="margin-top: 0; font-size: 1.3rem; font-weight: bold; color: #064e3b; margin-bottom: 15px; text-align: center;">
-    Calculadora de Flotación</h2>
-  <p
-    style="font-size: 0.9rem; color: #444; margin-bottom: 20px; line-height: 1.5; text-align: center;">
-    Calcula la Fuerza de Flotación ($F_B$) según el Principio de Arquímedes. g = 9.81 m/s².</p>
-  <div>
-    <div>
-      <label
-        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
-        for="density">Densidad del Fluido ($\rho_f$) [kg/m³]</label>
-      <input id="density"
-        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
-        type="number" value="1000">
+<div id="buoyancy-calculator-app"
+  style="font-family: 'Inter', sans-serif; color: #1f2937; max-width: 480px; margin: 20px auto; padding: 30px; background-color: #f9fafb; border-radius: 12px; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); border: 2px solid #e5e7eb;">
+  <h2
+    style="margin-top: 0; font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 5px; text-align: center;">
+    Calculadora de Fuerza de Flotación</h2>
+  <p style="font-size: 0.95rem; color: #4b5563; margin-bottom: 25px; line-height: 1.4; text-align: center;">
+    Calcula el Empuje (Fuerza de Flotación, F<sub>B</sub>) según el Principio de Arquímedes.
+  </p>
+  
+  <!-- FÓRMULA DIDÁCTICA (CON NOTACIÓN FÍSICA CORREGIDA) -->
+  <div style="margin-bottom: 20px; padding: 10px 15px; background-color: #e0f2f1; border-left: 4px solid #009688; border-radius: 4px;">
+        <p style="font-size: 0.9rem; font-weight: 600; color: #004d40; margin: 0 0 5px 0;">
+            Fórmula Utilizada (Principio de Arquímedes):
+        </p>
+        <!-- Notación física corregida: F_B = rho_f * g * V_sumergido -->
+        <span style="font-family: monospace; display: block; margin-top: 5px; font-size: 1.1rem; font-weight: bold; color: #004d40;">
+            F<sub>B</sub> = &rho;<sub>f</sub> &times; g &times; V<sub>sumergido</sub>
+        </span>
+        <span style="font-family: monospace; display: block; margin-top: 5px; font-size: 0.8rem; line-height: 1.6; color: #004d40;">
+            Donde g = 9.81 m/s² (Aceleración de la gravedad)
+        </span>
     </div>
-    <div style="margin-top: 15px;">
-      <label
-        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
-        for="volume">Volumen Sumergido ($V$) [m³]</label>
-      <input id="volume"
-        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
-        type="number" placeholder="Ej: 0.05">
-    </div>
-    <button id="calculate-btn-2"
-      style="width: 100%; background-color: #065f46; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: background-color 0.3s;"
-      onmouseover="this.style.backgroundColor='#054c38'"
-      onmouseout="this.style.backgroundColor='#065f46'">
-      Calcular $F_B$ </button>
-    <div id="result-container-2"
-      style="display: none; text-align: center; background-color: #f0fdf4; border: 1px solid #a7f3d0; padding: 15px; margin-top: 15px; border-radius: 5px;">
-      <span
-        style="display: block; font-size: 0.9rem; font-weight: 500; color: #064e3b;">Fuerza
-        de Flotación:</span>
-      <span id="result-2"
-        style="display: block; font-size: 1.8rem; font-weight: bold; color: #064e3b; margin-top: 5px;"></span>
-    </div>
-  </div>
+
+  <!-- CONTROLES DE ENTRADA -->
+  <div>
+    <div>
+      <label
+        style="display: block; font-size: 1rem; font-weight: 600; color: #111827; margin-bottom: 8px;"
+        for="density">Densidad del Fluido (&rho;<sub>f</sub>) [kg/m³]</label>
+      <input id="density"
+        style="width: 100%; padding: 12px; font-size: 1.1rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; transition: border-color 0.3s, box-shadow 0.3s;"
+        type="number" value="1000">
+    </div>
+    <div style="margin-top: 15px;">
+      <label
+        style="display: block; font-size: 1rem; font-weight: 600; color: #111827; margin-bottom: 8px;"
+        for="volume">Volumen Sumergido (V<sub>sumergido</sub>) [m³]</label>
+      <input id="volume"
+        style="width: 100%; padding: 12px; font-size: 1.1rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; transition: border-color 0.3s, box-shadow 0.3s;"
+        type="number" placeholder="Ej: 0.05" value="0.05">
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button id="calculate-buoyancy-btn"
+      style="flex-grow: 3; background-color: #10b981; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px #047857;"
+      onmouseover="this.style.backgroundColor='#059669'"
+      onmouseout="this.style.backgroundColor='#10b981'"
+      onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #047857';"
+      onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px #047857';">
+      Calcular Empuje (N)
+    </button>
+    <button id="clear-buoyancy-btn"
+      style="flex-grow: 1; background-color: #6b7280; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background-color 0.3s, transform 0.1s; box-shadow: 0 4px #4b5563;"
+      onmouseover="this.style.backgroundColor='#4b5563'"
+      onmouseout="this.style.backgroundColor='#6b7280'"
+      onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #4b5563';"
+      onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px #4b5563';">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- CONTENEDOR DE RESULTADO -->
+  <div id="result-container-2"
+    style="display: none; text-align: center; background-color: #ecfdf5; border: 1px solid #a7f3d0; padding: 20px; margin-top: 25px; border-radius: 8px;">
+    <span
+      style="display: block; font-size: 1rem; font-weight: 600; color: #065f46;">Fuerza de Flotación
+      (Empuje):</span>
+    <!-- RESULTADO PRINCIPAL: N -->
+    <span id="result-2"
+      style="display: block; font-size: 2.2rem; font-weight: 800; color: #065f46; margin-top: 5px;"></span>
+    <!-- RESULTADO SECUNDARIO: kN -->
+    <span id="result-kn"
+      style="display: block; font-size: 1.1rem; font-weight: 600; color: #059669; margin-top: 5px;"></span>
+    <span id="example-note" style="display: none; font-size: 0.8rem; color: #065f46; margin-top: 8px;">
+        *Ejemplo: El empuje de un volumen de 0.05 m³ de agua es 490.5 N (0.49 kN).
+    </span>
+  </div>
 </div>
 
 <script type="text/javascript">
-  // Encapsulamos para evitar conflictos en el entorno padre
-  (function() {
-    var calculateBtn2 = document.getElementById('calculate-btn-2');
+  (function() {
+    // Petición/Recordatorio: Obtener referencias a todos los elementos del DOM.
+    var densityInput = document.getElementById('density');
+    var volumeInput = document.getElementById('volume');
+    var calculateBtn = document.getElementById('calculate-buoyancy-btn');
+    var clearBtn = document.getElementById('clear-buoyancy-btn');
+    var resultContainer = document.getElementById('result-container-2');
+    var resultEl = document.getElementById('result-2');
+    var resultKnEl = document.getElementById('result-kn'); // Nuevo elemento para kN
+    var exampleNote = document.getElementById('example-note');
+    
+    // Constante de la gravedad
+    const G = 9.81; // Aceleración de gravedad [m/s²]
 
-    if (calculateBtn2) {
-      calculateBtn2.onclick = function() {
-        // Petición: Obtener los valores 🧠
-        var density = parseFloat(document.getElementById('density').value);
-        var volume = parseFloat(document.getElementById('volume').value);
-        var g = 9.81; // Aceleración de gravedad [m/s²]
+    /**
+     * Objetivo: Calcular la Fuerza de Flotación (Empuje) F_B y mostrarla en N y kN.
+     * Entradas: density (float), volume (float).
+     * Salidas: None. Muestra el resultado directamente en el DOM.
+     * Éxito/Finalización: Ecuación: F_B = \rho_{fluido} \cdot g \cdot V_{sumergido}
+     */
+    function calculateBuoyancy() {
+      var density = parseFloat(densityInput.value);
+      var volume = parseFloat(volumeInput.value);
 
-        var resultContainer = document.getElementById('result-container-2');
-        var resultEl = document.getElementById('result-2');
+      resultContainer.style.display = 'block'; // Mostrar el contenedor
+      exampleNote.style.display = 'none'; // Ocultar la nota del ejemplo una vez se calcula
 
-        resultContainer.style.display = 'block'; // Mostrar el contenedor
+      if (isNaN(density) || isNaN(volume) || density <= 0 || volume <= 0) {
+        resultEl.textContent = "Ingrese valores positivos válidos.";
+        resultKnEl.textContent = ""; // Limpiar el resultado de kN
+        resultEl.style.color = "#b91c1c"; // Rojo intenso para error 🛑
+        resultContainer.style.backgroundColor = "#fee2e2"; // Fondo rojo claro
+      } else {
+        // Aplicamos el Principio de Arquímedes.
+        var buoyancyForceN = density * G * volume;
+        var buoyancyForceKN = buoyancyForceN / 1000; // Convertir de N a kN
 
-        if (isNaN(density) || isNaN(volume) || density <= 0 || volume <= 0) {
-          resultEl.textContent = "Ingrese valores positivos.";
-          resultEl.style.color = "#c00"; // Rojo de error 🛑
-        } else {
-          // Éxito: Aplicamos el Principio de Arquímedes.
-          // Ecuación: F_B = \rho_{\text{fluido}} \cdot g \cdot V_{\text{sumergido}}
-          var buoyancyForce = density * g * volume;
+        // Mostrar resultado principal en Newtons (N).
+        resultEl.textContent = buoyancyForceN.toFixed(2) + ' N';
+        // Mostrar resultado secundario en KiloNewtons (kN).
+        resultKnEl.textContent = '(' + buoyancyForceKN.toFixed(3) + ' kN)';
 
-          // Éxito: Mostrar resultado y establecer color principal.
-          resultEl.textContent = buoyancyForce.toFixed(2) + ' N';
-          resultEl.style.color = "#064e3b"; // Verde principal 🌲
-        }
-      };
-    }
-  })();
+        resultEl.style.color = "#065f46"; // Verde oscuro principal 🔷
+        resultKnEl.style.color = "#059669"; // Verde intermedio
+        resultContainer.style.backgroundColor = "#ecfdf5"; // Fondo verde claro
+      }
+    }
+    
+    /**
+     * Objetivo: Limpia los campos de entrada y oculta el resultado.
+     * Entradas: None.
+     * Salidas: None. Limpia el DOM y restablece el foco.
+     */
+    function clearFields() {
+      densityInput.value = '';
+      volumeInput.value = '';
+      resultEl.textContent = '';
+      resultKnEl.textContent = "";
+      resultContainer.style.display = 'none';
+      exampleNote.style.display = 'none';
+      densityInput.focus();
+    }
+
+    // Petición/Recordatorio: Manejo de la carga inicial para mostrar el ejemplo.
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateBuoyancy(); // Ejecutar el cálculo inicial con los valores por defecto (1000 kg/m³ y 0.05 m³)
+        exampleNote.style.display = 'block'; // Mostrar la nota del ejemplo
+    });
+    
+    // Asignación de los eventos a los botones.
+    if (calculateBtn) {
+      calculateBtn.addEventListener('click', calculateBuoyancy);
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', clearFields);
+    }
+  })();
 </script>
