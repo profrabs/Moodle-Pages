@@ -1,0 +1,82 @@
+<!--
+  METADATA:
+  Objetivo: Proporcionar una calculadora interactiva para la conversión de Viscosidad SSU a cSt.
+  Autor: Prof. R. Benitez
+  Fecha: 2025-11-14
+  Versión: 1.0
+  Dependencias: Ninguna (HTML, CSS inline, JavaScript puro)
+-->
+<div
+  style="font-family: Arial, sans-serif; color: #333; max-width: 450px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+  <h2
+    style="margin-top: 0; font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin-bottom: 15px; text-align: center;">
+    Calculadora de Viscosidad</h2>
+  <p style="font-size: 0.9rem; color: #444; margin-bottom: 20px; line-height: 1.5; text-align: center;">
+    Conversión de Segundos Saybolt Universal (SSU) a Viscosidad Cinemática ($\nu$) [cSt].</p>
+  <div>
+    <div>
+      <label
+        style="display: block; font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 5px;"
+        for="ssu">Valor SSU</label>
+      <input id="ssu"
+        style="width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;"
+        type="number" placeholder="Ej: 150">
+    </div>
+    <button id="calculate-btn"
+      style="width: 100%; background-color: #1e3a8a; color: white; font-size: 1.1rem; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: background-color 0.3s;"
+      onmouseover="this.style.backgroundColor='#1a337a'"
+      onmouseout="this.style.backgroundColor='#1e3a8a'">
+      Calcular $\nu$ </button>
+    <div id="result-container"
+      style="display: none; text-align: center; background-color: #f0f4f8; border: 1px solid #b6d4f0; padding: 15px; margin-top: 15px; border-radius: 5px;">
+      <span
+        style="display: block; font-size: 0.9rem; font-weight: 500; color: #1e3a8a;">Viscosidad
+        Cinemática:</span>
+      <span id="result"
+        style="display: block; font-size: 1.8rem; font-weight: bold; color: #1e3a8a; margin-top: 5px;"></span>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Encapsulamos para evitar conflictos en el entorno padre
+  (function() {
+    var calculateBtn = document.getElementById('calculate-btn');
+
+    if (calculateBtn) {
+      calculateBtn.onclick = function() {
+        // Petición: Obtener el valor de SSU 🧠
+        var ssuInput = document.getElementById('ssu');
+        var ssu = parseFloat(ssuInput.value);
+        var resultContainer = document.getElementById('result-container');
+        var resultEl = document.getElementById('result');
+
+        resultContainer.style.display = 'block'; // Mostrar el contenedor
+        var cSt = 0;
+
+        if (isNaN(ssu) || ssu <= 0) {
+          resultEl.textContent = "Ingrese un valor SSU positivo.";
+          resultEl.style.color = "#c00"; // Rojo de error 🛑
+        } else {
+          // Éxito: Se aplica la fórmula de conversión SSU a cSt (centistokes) ✅
+          if (ssu > 100) {
+            // Ecuación: \nu = 0.220 \cdot SSU - 135 / SSU
+            cSt = (0.220 * ssu) - (135 / ssu);
+          } else if (ssu > 32 && ssu <= 100) {
+            // Ecuación: \nu = 0.226 \cdot SSU - 195 / SSU
+            cSt = (0.226 * ssu) - (195 / ssu);
+          } else {
+            // SSU <= 32
+            resultEl.textContent = "Fórmula no aplica para SSU <= 32";
+            resultEl.style.color = "#b45309"; // Naranja de advertencia ⚠️
+            return; // Salir de la función si no aplica
+          }
+
+          // Éxito: Mostrar resultado y establecer color principal.
+          resultEl.textContent = cSt.toFixed(2) + ' cSt';
+          resultEl.style.color = "#1e3a8a"; // Azul principal 🔷
+        }
+      };
+    }
+  })();
+</script>
